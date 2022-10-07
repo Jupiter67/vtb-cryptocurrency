@@ -2,16 +2,14 @@ from asyncio import run
 
 from hypercorn.asyncio import serve, Config
 from fastapi import FastAPI
-from fastapi.routing import APIRoute
 
-from app.service import foo
+from app.service import router
 from settings import Settings
 
 
 settings = Settings()
-app = FastAPI(routes=[
-    APIRoute('/foo', foo, methods=['GET'])
-])
+app = FastAPI()
+app.include_router(router)
 
 if __name__ == '__main__':
     config = Config()

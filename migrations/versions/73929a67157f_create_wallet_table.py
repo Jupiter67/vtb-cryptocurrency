@@ -1,8 +1,8 @@
-"""add wallet table
+"""create wallet table
 
-Revision ID: 008e3be8bc24
+Revision ID: 73929a67157f
 Revises: 
-Create Date: 2022-10-07 23:16:48.553249
+Create Date: 2022-10-07 23:22:32.525795
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '008e3be8bc24'
+revision = '73929a67157f'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,6 +22,7 @@ def upgrade() -> None:
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('private_key', sa.String(), nullable=False),
     sa.Column('public_key', sa.String(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###

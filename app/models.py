@@ -9,3 +9,4 @@ class Wallet(Base):
     id = Column(Integer, primary_key=True)
     private_key = Column(String, nullable=False)
     public_key = Column(String, nullable=False)
+    user_id = Column(Integer, nullable=False)

@@ -1,0 +1,7 @@
+# service host
+host:
+# service port
+port:
+# vtb credentials for cryptocurrency
+vtb_private_key:
+vtb_public_key:

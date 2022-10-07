@@ -130,3 +130,6 @@ dmypy.json
 
 # Pycharm idea ignore
 .idea/
+
+# Settings ignore
+settings.yaml

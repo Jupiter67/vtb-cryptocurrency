@@ -2,14 +2,14 @@
 API start here
 """
 
-from fastapi import APIRouter, Request
-from sqlalchemy.future import select
+from fastapi import APIRouter
+from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db import SessionLocal
 from app.models import Wallet
 from app.value_objects import Wallet as WalletObject
-from app.inputs import WalletInput
+from app.types import WalletInput
 
 
 router = APIRouter()
@@ -41,3 +41,13 @@ async def create_wallet(w_input: WalletInput) -> dict:
             s.add(w)
         await s.refresh(w)
     return WalletObject.from_orm(w).__dict__
+
+
+@router.delete('/delete_wallet/{wallet_id}')
+async def delete_wallet(wallet_id: int) -> bool:
+    async with SessionLocal() as s:
+        s: AsyncSession
+        async with s.begin():
+            query = delete(Wallet).where(Wallet.id == wallet_id)
+            await s.execute(query)
+    return True

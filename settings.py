@@ -15,6 +15,12 @@ class Settings:
     def __init__(self):
         with open('settings.yaml', 'r') as f:
             config = load(f, SafeLoader)
-        for i in dir(self):
-            if not i.startswith('__'):
-                self.__setattr__(i, config.get(i))
+        self.host = config['host']
+        self.port = config['port']
+        self.vtb_private_key = config['vtb_private_key']
+        self.vtb_public_key = config['vtb_public_key']
+        self.pg_host = config['pg_host']
+        self.pg_port = config['pg_port']
+        self.pg_user = config['pg_user']
+        self.pg_password = config['pg_password']
+        self.pg_database = config['pg_database']

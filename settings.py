@@ -6,6 +6,11 @@ class Settings:
     port: str
     vtb_public_key: str
     vtb_private_key: str
+    pg_host: str
+    pg_port: str
+    pg_user: str
+    pg_password: str
+    pg_database: str
 
     def __init__(self):
         with open('settings.yaml', 'r') as f:

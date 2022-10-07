@@ -5,3 +5,9 @@ port:
 # vtb credentials for cryptocurrency
 vtb_private_key:
 vtb_public_key:
+# Postgresql config
+pg_host: str
+pg_port: str
+pg_user: str
+pg_password: str
+pg_database: str

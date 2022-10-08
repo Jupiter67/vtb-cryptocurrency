@@ -65,4 +65,4 @@ async def vtb_get_transaction_history(
 ) -> List[Dict[str, Union[str, int]]]:
     body = {'page': page, 'offset': offset, 'sort': sort}
     response = await request_manager.post(f'{s.base_url}/v1/wallets/{public_key}/history', data=body)
-    return response['history']
+    return response

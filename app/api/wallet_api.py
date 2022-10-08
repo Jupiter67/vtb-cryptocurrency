@@ -88,5 +88,5 @@ async def get_history_by_user_id(
             public_key = await s.execute(query)
             public_key = public_key.fetchone()
     if public_key:
-        return vtb_get_transaction_history(public_key, page, offset, sort)
+        return await vtb_get_transaction_history(public_key, page, offset, sort)
     raise HTTPException(status_code=404, detail='Wallet for this user not found')

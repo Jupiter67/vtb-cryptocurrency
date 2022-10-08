@@ -1,0 +1,28 @@
+networks:
+  bridge-network:
+    driver: bridge
+
+services:
+  python-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: python-server
+    environment:
+      - PYTHONUNBUFFERED=1
+    ports:
+      - 8000:8000
+    networks:
+      - bridge-network
+    depends_on:
+      - db
+
+  db:
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5433:5432

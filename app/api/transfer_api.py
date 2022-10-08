@@ -4,7 +4,7 @@ from app.types.transfer_types import TransferMaticInput, TransferRubleInput, Tra
 from app.vtb_api import vtb_matic_transfer, vtb_ruble_transfer, vtb_transfer_nft
 
 
-transfer_router = APIRouter(prefix='/transfer')
+transfer_router = APIRouter(prefix='/api/transfer')
 
 
 @transfer_router.post('/transfer_matic')

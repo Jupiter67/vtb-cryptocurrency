@@ -4,18 +4,19 @@ API start here
 
 from typing import Dict, Union
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter
 from fastapi.exceptions import HTTPException
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db import SessionLocal
 from app.models import Wallet
+from app.types.wallet_types import CreateWalletInput
 from app.value_objects import Wallet as WalletObject
 from app.vtb_api import vtb_create_wallet, vtb_get_balance
 
 
-wallet_router = APIRouter(prefix='/wallet')
+wallet_router = APIRouter(prefix='/api/wallet')
 
 
 @wallet_router.get('/get_wallet/{user_id}')
@@ -38,14 +39,13 @@ async def get_wallet_by_id(user_id: int) -> Dict[str, Union[str, int]]:
 
 
 @wallet_router.post("/create_wallet")
-async def create_wallet(req: Request) -> Dict[str, int]:
+async def create_wallet(wallet_input: CreateWalletInput) -> Dict[str, int]:
     async with SessionLocal() as s:
         s: AsyncSession
         async with s.begin():
-            r = await req.json()
             new_wallet = await vtb_create_wallet()
             w = Wallet(
-                user_id=int(r['user_id']),
+                user_id=wallet_input.user_id,
                 private_key=new_wallet['private_key'],
                 public_key=new_wallet['public_key'],
             )

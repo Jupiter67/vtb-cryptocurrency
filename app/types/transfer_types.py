@@ -6,20 +6,20 @@ from pydantic import BaseModel, validator
 
 
 class TransferCoinInput(BaseModel):
-    from_private_key: str
-    to_public_key: str
+    from_user_id: int
+    to_user_id: int
     amount: float
 
-    @validator('from_private_key', 'to_public_key')
+    @validator('from_user_id', 'to_user_id')
     def key_exists(cls, v):
         if not v:
-            raise ValueError('Keys must be not empty')
+            raise ValueError('User ids must not be empty')
         return v
 
-    @validator('amount')
-    def amount_greater_zero(cls, v):
+    @validator('from_user_id', 'to_user_id', 'amount')
+    def value_greater_zero(cls, v):
         if v <= 0:
-            raise ValueError('Amount must be greater than zero')
+            raise ValueError('Value on fields must be greater than zero')
         return v
 
 

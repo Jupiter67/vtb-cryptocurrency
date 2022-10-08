@@ -49,7 +49,7 @@ class TransferNftInput(BaseModel):
     to_public_key: str
     token_id: int
 
-    @validator('private_key', 'public_key', 'token_id')
+    @validator('from_private_key', 'to_public_key', 'token_id')
     def field_exists(cls, v):
         if not v:
             raise ValueError('Fields must be not empty')

@@ -5,6 +5,7 @@ from fastapi import FastAPI
 
 from app.api.transfer_api import transfer_router
 from app.api.wallet_api import wallet_router
+from app.request_manager import request_manager
 from settings import Settings
 
 
@@ -12,6 +13,12 @@ settings = Settings()
 app = FastAPI()
 app.include_router(wallet_router)
 app.include_router(transfer_router)
+
+
+@app.on_event('startup')
+async def startup_event():
+    await request_manager.connect()
+
 
 if __name__ == '__main__':
     config = Config()

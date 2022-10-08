@@ -12,7 +12,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.db import SessionLocal
 from app.models import Wallet
 from app.value_objects import Wallet as WalletObject
-from app.vtb_api import vtb_create_wallet
+from app.vtb_api import vtb_create_wallet, vtb_get_balance
 
 
 wallet_router = APIRouter(prefix='/wallet')
@@ -43,7 +43,7 @@ async def create_wallet(req: Request) -> Dict[str, int]:
         s: AsyncSession
         async with s.begin():
             r = await req.json()
-            new_wallet = vtb_create_wallet()
+            new_wallet = await vtb_create_wallet()
             w = Wallet(
                 user_id=int(r["user_id"]),
                 private_key=new_wallet["private_key"],
@@ -62,3 +62,16 @@ async def delete_wallet(wallet_id: int) -> bool:
             query = delete(Wallet).where(Wallet.id == wallet_id)
             await s.execute(query)
     return True
+
+
+@wallet_router.get('/get_balance/{user_id}')
+async def get_balance_by_user_id(user_id: int) -> Dict[str, float]:
+    async with SessionLocal() as s:
+        s: AsyncSession
+        async with s.begin():
+            query = select(Wallet.public_key).where(Wallet.user_id == user_id)
+            result = await s.execute(query)
+            result = result.fetchone()
+    if result:
+        return await vtb_get_balance(result[0])
+    raise HTTPException(status_code=404, detail="Wallet for this user not found")

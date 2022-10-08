@@ -2,14 +2,14 @@
 API start here
 """
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db import SessionLocal
 from app.models import Wallet
 from app.value_objects import Wallet as WalletObject
-from app.types import WalletInput
+from app.vtb_api import vtb_create_wallet
 
 
 router = APIRouter()
@@ -33,17 +33,23 @@ async def get_wallet_by_id(user_id: int) -> dict:
 
 
 @router.post("/create_wallet")
-async def create_wallet(w_input: WalletInput) -> dict:
+async def create_wallet(req: Request) -> dict:
     async with SessionLocal() as s:
         s: AsyncSession
         async with s.begin():
-            w = Wallet(**w_input.__dict__)
+            r = await req.json()
+            new_wallet = vtb_create_wallet()
+            w = Wallet(
+                user_id=int(r["user_id"]),
+                private_key=new_wallet["privateKey"],
+                public_key=new_wallet["publicKey"],
+            )
             s.add(w)
         await s.refresh(w)
     return WalletObject.from_orm(w).__dict__
 
 
-@router.delete('/delete_wallet/{wallet_id}')
+@router.delete("/delete_wallet/{wallet_id}")
 async def delete_wallet(wallet_id: int) -> bool:
     async with SessionLocal() as s:
         s: AsyncSession

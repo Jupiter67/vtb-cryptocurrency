@@ -11,6 +11,7 @@ class Settings:
     pg_user: str
     pg_password: str
     pg_database: str
+    base_url: str = 'https://hackathon.lsp.team/hk'
 
     def __init__(self):
         with open('settings.yaml', 'r') as f:

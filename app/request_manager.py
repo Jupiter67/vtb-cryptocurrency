@@ -1,3 +1,7 @@
+"""
+Unified request manager
+"""
+
 from typing import Dict, Any
 
 from aiohttp import ClientSession

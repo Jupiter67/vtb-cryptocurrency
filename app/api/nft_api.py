@@ -2,7 +2,7 @@ from typing import Dict, List, Union
 
 from fastapi import APIRouter
 
-from app.types import GenerateNftInput
+from app.types.nft_types import GenerateNftInput
 from app.vtb_api import vtb_generate_nft, vtb_get_nft_info, vtb_get_balance_nft, vtb_get_nft_list
 
 nft_router = APIRouter(prefix='/nft')

@@ -10,7 +10,7 @@ from settings import Settings
 
 service_settings = Settings()
 
-SQLALCHEMY_DATABASE_URL = "postgresql+asyncpg://{}:{}@{}:{}/{}".format(
+SQLALCHEMY_DATABASE_URL = 'postgresql+asyncpg://{}:{}@{}:{}/{}'.format(
     service_settings.pg_user,
     service_settings.pg_password,
     service_settings.pg_host,

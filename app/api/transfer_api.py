@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.types import TransferMaticInput, TransferRubleInput, TransferNftInput
+from app.types.transfer_types import TransferMaticInput, TransferRubleInput, TransferNftInput
 from app.vtb_api import vtb_matic_transfer, vtb_ruble_transfer, vtb_transfer_nft
 
 

@@ -13,7 +13,7 @@ from app.db import SessionLocal
 from app.models import Wallet
 from app.types.wallet_types import CreateWalletInput
 from app.value_objects import Wallet as WalletObject
-from app.vtb_api import vtb_create_wallet, vtb_get_balance
+from app.vtb_api import vtb_create_wallet, vtb_get_balance, vtb_get_transaction_history
 
 
 wallet_router = APIRouter(prefix='/api/wallet')
@@ -74,4 +74,19 @@ async def get_balance_by_user_id(user_id: int) -> Dict[str, float]:
             result = result.fetchone()
     if result:
         return await vtb_get_balance(result[0])
+    raise HTTPException(status_code=404, detail='Wallet for this user not found')
+
+
+@wallet_router.get('/history')
+async def get_history_by_user_id(
+    user_id: int, page: int | None = 1, offset: int | None = 20, sort: str | None = 'asc'
+):
+    async with SessionLocal() as s:
+        s: AsyncSession
+        async with s.begin():
+            query = select(Wallet.public_key).where(Wallet.user_id == user_id)
+            public_key = await s.execute(query)
+            public_key = public_key.fetchone()
+    if public_key:
+        return vtb_get_transaction_history(public_key, page, offset, sort)
     raise HTTPException(status_code=404, detail='Wallet for this user not found')

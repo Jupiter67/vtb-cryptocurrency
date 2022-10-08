@@ -41,8 +41,8 @@ async def create_wallet(req: Request) -> dict:
             new_wallet = vtb_create_wallet()
             w = Wallet(
                 user_id=int(r["user_id"]),
-                private_key=new_wallet["privateKey"],
-                public_key=new_wallet["publicKey"],
+                private_key=new_wallet["private_key"],
+                public_key=new_wallet["public_key"],
             )
             s.add(w)
         await s.refresh(w)

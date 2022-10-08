@@ -32,11 +32,11 @@ class TransferRubleInput(TransferCoinInput):
 
 
 class TransferNftInput(BaseModel):
-    from_private_key: str
-    to_public_key: str
+    from_user_id: str
+    to_user_id: str
     token_id: int
 
-    @validator('from_private_key', 'to_public_key', 'token_id')
+    @validator('from_user_id', 'to_user_id', 'token_id')
     def field_exists(cls, v):
         if not v:
             raise ValueError('Fields must be not empty')

@@ -18,7 +18,7 @@ from app.vtb_api import vtb_create_wallet, vtb_get_balance
 wallet_router = APIRouter(prefix='/wallet')
 
 
-@wallet_router.get("/get_wallet/{user_id}")
+@wallet_router.get('/get_wallet/{user_id}')
 async def get_wallet_by_id(user_id: int) -> Dict[str, Union[str, int]]:
     """
     Gets wallet by user id
@@ -33,8 +33,8 @@ async def get_wallet_by_id(user_id: int) -> Dict[str, Union[str, int]]:
             result = await s.execute(query)
             result = result.fetchone()
         if result:
-            return WalletObject.from_orm(result["Wallet"]).__dict__
-        raise HTTPException(status_code=404, detail="Item not found")
+            return WalletObject.from_orm(result['Wallet']).__dict__
+        raise HTTPException(status_code=404, detail='Item not found')
 
 
 @wallet_router.post("/create_wallet")
@@ -45,16 +45,16 @@ async def create_wallet(req: Request) -> Dict[str, int]:
             r = await req.json()
             new_wallet = await vtb_create_wallet()
             w = Wallet(
-                user_id=int(r["user_id"]),
-                private_key=new_wallet["private_key"],
-                public_key=new_wallet["public_key"],
+                user_id=int(r['user_id']),
+                private_key=new_wallet['private_key'],
+                public_key=new_wallet['public_key'],
             )
             s.add(w)
         await s.refresh(w)
     return WalletObject.from_orm(w).__dict__
 
 
-@wallet_router.delete("/delete_wallet/{wallet_id}")
+@wallet_router.delete('/delete_wallet/{wallet_id}')
 async def delete_wallet(wallet_id: int) -> bool:
     async with SessionLocal() as s:
         s: AsyncSession
@@ -74,4 +74,4 @@ async def get_balance_by_user_id(user_id: int) -> Dict[str, float]:
             result = result.fetchone()
     if result:
         return await vtb_get_balance(result[0])
-    raise HTTPException(status_code=404, detail="Wallet for this user not found")
+    raise HTTPException(status_code=404, detail='Wallet for this user not found')

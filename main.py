@@ -3,6 +3,7 @@ from asyncio import run
 from hypercorn.asyncio import serve, Config
 from fastapi import FastAPI
 
+from app.api.nft_api import nft_router
 from app.api.transfer_api import transfer_router
 from app.api.wallet_api import wallet_router
 from app.request_manager import request_manager
@@ -13,6 +14,7 @@ settings = Settings()
 app = FastAPI()
 app.include_router(wallet_router)
 app.include_router(transfer_router)
+app.include_router(nft_router)
 
 
 @app.on_event('startup')

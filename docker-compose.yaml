@@ -15,13 +15,16 @@ services:
     networks:
       - bridge-network
     depends_on:
-      - db
+      - postgres
 
-  db:
+  postgres:
     image: postgres:14-alpine
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
+    container_name: postgres
+    networks:
+      - bridge-network
     volumes:
       - ./postgres_data:/var/lib/postgresql/data
     ports:
